@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static no.ntnu.imt3281.sudoku.Sudoku.setupBoard;
 import static no.ntnu.imt3281.sudoku.Sudoku.sudNr;
+import static no.ntnu.imt3281.sudoku.Sudoku.textFields;
 
 
 public class SudokuController {
@@ -30,14 +31,22 @@ public class SudokuController {
         int nr = 0;
 
         setupBoard();
+        tearDown();
 
         for(int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++) {
-                TextField text = new TextField();
+                TextField text = textFields[i][j];
                 text.setText(Integer.toString(sudNr[i][j]));
-                text.setFont(Font.font(20));
+                text.setMaxWidth(45.0);
+                text.setAlignment(Pos.CENTER);
+                text.setFont(Font.font(14));
                 grid.add(text, i, j);
             }
         }
+    }
+
+    @FXML
+    private void tearDown(){
+        grid.getChildren().retainAll(grid.getChildren().get(0));
     }
 }
