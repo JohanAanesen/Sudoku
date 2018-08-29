@@ -62,7 +62,7 @@ public class SudokuController {
             default: nr = 0; break;
         }
 
-        if(nr!=0){
+        if(nr!=0 && isLegal(nr)){
             board[select_row][select_col] = nr;
             drawBoard();
         }
@@ -89,10 +89,32 @@ public class SudokuController {
                 if(board[i][j] != 0){
                     gc.setFill(Color.BLACK);
                     gc.setFont(new Font(20d));
-                    gc.fillText(""+board[i][j], i*50d +20, j*50d+30);
+                    gc.fillText(""+board[i][j], i*50d +20, j*50d+32);
 
                 }
             }
         }
+    }
+
+    public boolean isLegal(int nr){
+        boolean legal = true;
+
+        for (int i = 0; i < 9; i++) {
+            //check if number is not occuring in the same row
+            if(board[select_row][i] == nr){ legal = false; }
+            //check if number is not occuring in the same collumn
+            if(board[i][select_col] == nr){ legal = false; }
+        }
+
+        //check if number is not occuring in the same block
+        int blockX = (select_row/3)*3; //split by and time by 3 to find start of block
+        int blockY = (select_col/3)*3;
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(board[blockX+i][blockY+j] == nr){ legal = false; }
+            }
+        }
+        return legal;
     }
 }
