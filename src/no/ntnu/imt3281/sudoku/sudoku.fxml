@@ -46,9 +46,9 @@
       </GridPane>
       <ToolBar layoutY="456.0" prefHeight="40.0" prefWidth="450.0">
         <items>
-          <Button fx:id="knapp1" mnemonicParsing="false" onAction="#test" text="New" />
+          <Button fx:id="knapp1" mnemonicParsing="false" onAction="#createSudoku" text="New" />
         </items>
       </ToolBar>
-      <Canvas fx:id="canvas" height="450.0" onKeyPressed="#newInput" onMouseClicked="#selectSquare" width="450.0" />
+      <Canvas fx:id="canvas" height="450.0" onMouseClicked="#selectSquare" width="450.0" />
    </children>
 </AnchorPane>

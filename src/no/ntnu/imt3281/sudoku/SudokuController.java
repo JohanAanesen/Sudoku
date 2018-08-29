@@ -1,26 +1,24 @@
 package no.ntnu.imt3281.sudoku;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.control.Button;
-
 import javafx.event.ActionEvent;
+
+import java.io.FileNotFoundException;
+
+import static no.ntnu.imt3281.sudoku.Sudoku.readSudokuFromFile;
 
 
 public class SudokuController {
 
-    private int[][] board = new int[9][9];
+    public static int[][] board = new int[9][9];
     private int select_row, select_col;
     private boolean squareSelected = false;
 
@@ -59,20 +57,18 @@ public class SudokuController {
             case "DIGIT7": nr = 7; break;
             case "DIGIT8": nr = 8; break;
             case "DIGIT9": nr = 9; break;
+            case "DIGIT0": nr = 0; break;
             default: nr = 0; break;
         }
 
-        if(nr!=0 && isLegal(nr)){
+        if(isLegal(nr)){
             board[select_row][select_col] = nr;
             drawBoard();
+        }else if(nr == 0){
+            board[select_row][select_col] = 0;
         }
 
         drawBoard();
-    }
-
-    @FXML
-    void test(ActionEvent event) {
-
     }
 
     @FXML
@@ -116,5 +112,33 @@ public class SudokuController {
             }
         }
         return legal;
+    }
+
+    @FXML
+    void createSudoku(ActionEvent event) throws FileNotFoundException {
+        board = readSudokuFromFile();
+        /*
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                select_row = i;
+                select_col = j;
+                boolean legal = false;
+                int count = 0;
+                while(!legal){
+                    int randomNumber = new Random().nextInt(9)+1;
+                    if(isLegal(randomNumber)){
+                        legal = true;
+                        board[i][j] = randomNumber;
+                        count = 0;
+                    }
+                    if(count >= 20){i = 0; j = 0; break;}
+                    count++;
+                    System.out.println(count);
+                }
+                drawBoard();
+            }
+        }
+        */
+        drawBoard();
     }
 }
