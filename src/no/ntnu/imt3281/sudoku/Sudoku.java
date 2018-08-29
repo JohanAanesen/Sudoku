@@ -6,12 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Sudoku extends Application {
+
+    static int[][] sudNr = new int[9][9];
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sudoku.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Sudoku");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
@@ -19,5 +24,15 @@ public class Sudoku extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static void setupBoard(){
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                sudNr[i][j] = ThreadLocalRandom.current().nextInt(0, 9 + 1);
+            }
+
+        }
+
     }
 }
