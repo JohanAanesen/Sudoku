@@ -100,6 +100,8 @@ public class SudokuController {
     public boolean isLegal(int nr){
         boolean legal = true;
 
+        if(nr < 0){return false;}
+
         for (int i = 0; i < 9; i++) {
             //check if number is not occuring in the same row
             if(board[select_row][i] == nr){ legal = false; }
