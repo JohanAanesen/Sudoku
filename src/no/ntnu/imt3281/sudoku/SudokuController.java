@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static no.ntnu.imt3281.sudoku.Sudoku.readSudokuFromFile;
 
@@ -57,14 +58,18 @@ public class SudokuController {
             case "DIGIT7": nr = 7; break;
             case "DIGIT8": nr = 8; break;
             case "DIGIT9": nr = 9; break;
-            case "DIGIT0": nr = 0; break;
+            case "DIGIT0": nr = -1; break;
+            case "UP": if(select_col>0){select_col--;} break;
+            case "DOWN": if(select_col<8){select_col++;} break;
+            case "LEFT": if(select_row>0){select_row--;} break;
+            case "RIGHT": if(select_row<8){select_row++;} break;
             default: nr = 0; break;
         }
 
         if(isLegal(nr)){
             board[select_row][select_col] = nr;
             drawBoard();
-        }else if(nr == 0){
+        }else if(nr == -1){
             board[select_row][select_col] = 0;
         }
 
@@ -115,30 +120,8 @@ public class SudokuController {
     }
 
     @FXML
-    void createSudoku(ActionEvent event) throws FileNotFoundException {
+    void createSudoku(ActionEvent event) throws IOException {
         board = readSudokuFromFile();
-        /*
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                select_row = i;
-                select_col = j;
-                boolean legal = false;
-                int count = 0;
-                while(!legal){
-                    int randomNumber = new Random().nextInt(9)+1;
-                    if(isLegal(randomNumber)){
-                        legal = true;
-                        board[i][j] = randomNumber;
-                        count = 0;
-                    }
-                    if(count >= 20){i = 0; j = 0; break;}
-                    count++;
-                    System.out.println(count);
-                }
-                drawBoard();
-            }
-        }
-        */
         drawBoard();
     }
 }

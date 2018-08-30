@@ -6,10 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -29,19 +27,21 @@ public class Sudoku extends Application {
     }
 
 
-    public static int[][] readSudokuFromFile() throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("src/no/ntnu/imt3281/sudoku/sudokus/sudoku1.json"));
-        int[] nrs = new int [81];
-        int i = 0;
-        while(scanner.hasNextInt()){
-            nrs[i++] = scanner.nextInt();
-        }
+    public static int[][] readSudokuFromFile() throws IOException {
+        File file = new File("src/no/ntnu/imt3281/sudoku/sudokus/sudoku1.json");
+        byte[] bytes = new byte[(int) file.length()];
+        FileInputStream fis = new FileInputStream(file);
+        fis.read(bytes);
+        fis.close();
+
+        String[] valueStr = new String(bytes).trim().split("[^0-9]+");
 
         int[][] board = new int[9][9];
-        int p = 0;
-        for (int j = 0; j < 9; j++) {
-            for (int k = 0; k < 9; k++) {
-                board[j][k] = nrs[p++];
+
+        int count = 1;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                board[i][j] = Integer.parseInt(valueStr[count++]);
             }
         }
 
