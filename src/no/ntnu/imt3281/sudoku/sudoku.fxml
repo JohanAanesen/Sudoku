@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane onKeyPressed="#newInput" prefHeight="490.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="no.ntnu.imt3281.sudoku.SudokuController">
    <children>
@@ -47,6 +48,7 @@
       <ToolBar layoutY="456.0" prefHeight="40.0" prefWidth="450.0">
         <items>
           <Button fx:id="knapp1" mnemonicParsing="false" onAction="#createSudoku" text="New" />
+            <Text fx:id="message" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.9367218017578" />
         </items>
       </ToolBar>
       <Canvas fx:id="canvas" height="450.0" onMouseClicked="#selectSquare" width="450.0" />
