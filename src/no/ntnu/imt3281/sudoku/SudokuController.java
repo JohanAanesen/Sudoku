@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.scene.text.Text;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static no.ntnu.imt3281.sudoku.Sudoku.readSudokuFromFile;
@@ -20,8 +19,8 @@ import static no.ntnu.imt3281.sudoku.Sudoku.readSudokuFromFile;
 
 public class SudokuController {
 
-    private static int[][] board = new int[9][9];
-    private static int[][] originalBoard = new int[9][9];
+    private int[][] board = new int[9][9];
+    private int[][] originalBoard = new int[9][9];
     private boolean legalNumber = true;
     private int select_row, select_col;
 
@@ -30,6 +29,9 @@ public class SudokuController {
 
     @FXML
     private Button knapp1;
+
+    @FXML
+    private Button knapp2;
 
     @FXML
     private Text message;
@@ -42,8 +44,8 @@ public class SudokuController {
         int x = (int)Math.floor(event.getSceneX())/50;
         int y = (int)Math.floor(event.getSceneY())/50;
         if(x < 10 && y < 10){
-            select_row = x;
-            select_col = y;
+            select_col = x;
+            select_row = y;
         }
 
         drawBoard();
@@ -72,12 +74,12 @@ public class SudokuController {
         }
 
         if(isLegal(nr)){
-            if(originalBoard[select_row][select_col] == 0) {
-                board[select_row][select_col] = nr;
+            if(originalBoard[select_col][select_row] == 0) {
+                board[select_col][select_row] = nr;
             }
         }else if(nr == -1){
-            if(originalBoard[select_row][select_col] == 0) {
-                board[select_row][select_col] = 0;
+            if(originalBoard[select_col][select_row] == 0) {
+                board[select_col][select_row] = 0;
             }
         }
 
@@ -89,6 +91,8 @@ public class SudokuController {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
 
+        System.out.println("Rad: "+select_row + "\tCol: "+select_col);
+
         //Mark selected square
         if(legalNumber) {
             gc.setFill(Color.GREENYELLOW);
@@ -96,7 +100,7 @@ public class SudokuController {
             gc.setFill(Color.RED);
             legalNumber = true;
         }
-        gc.fillRect(select_row*50+1,select_col*50+1, 48,48);
+        gc.fillRect(select_col*50+1,select_row*50+1, 48,48);
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -116,7 +120,7 @@ public class SudokuController {
     private boolean isLegal(int nr){
         boolean legal = true;
 
-        if(originalBoard[select_row][select_col] != 0){ //you can't edit a original number
+        if(originalBoard[select_col][select_row] != 0){ //you can't edit a original number
             return false;
         }
 
@@ -124,14 +128,14 @@ public class SudokuController {
 
         for (int i = 0; i < 9; i++) {
             //check if number is not occurring in the same row
-            if(board[select_row][i] == nr){ legal = false;}
+            if(board[select_col][i] == nr){ legal = false;}
             //check if number is not occurring in the same column
-            if(board[i][select_col] == nr){ legal = false; }
+            if(board[i][select_row] == nr){ legal = false; }
         }
 
         //check if number is not occurring in the same block
-        int blockX = (select_row/3)*3; //split by and time by 3 to find start of block
-        int blockY = (select_col/3)*3;
+        int blockX = (select_col/3)*3; //split by and time by 3 to find start of block
+        int blockY = (select_row/3)*3;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -152,6 +156,27 @@ public class SudokuController {
                 originalBoard[i][j] = board[i][j]; //copies the new board
             }
         }
+        drawBoard();
+    }
+
+    @FXML
+    void flip(ActionEvent event) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = i; j < 9; j++) {
+                int temp = this.board[i][j];
+                this.board[i][j] = this.board[j][j];
+                this.board[j][i] = temp;
+            }
+        }
+
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                originalBoard[i][j] = 0; //resets board
+                originalBoard[i][j] = board[i][j]; //copies the new board
+            }
+        }
+
         drawBoard();
     }
 }

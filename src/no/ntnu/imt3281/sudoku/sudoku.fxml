@@ -48,6 +48,7 @@
       <ToolBar layoutY="456.0" prefHeight="40.0" prefWidth="450.0">
         <items>
           <Button fx:id="knapp1" mnemonicParsing="false" onAction="#createSudoku" text="New" />
+            <Button fx:id="knapp2" mnemonicParsing="false" onAction="#flip" text="Flip" />
             <Text fx:id="message" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.9367218017578" />
         </items>
       </ToolBar>
