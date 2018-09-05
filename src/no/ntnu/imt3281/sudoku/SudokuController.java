@@ -34,6 +34,15 @@ public class SudokuController {
     private Button knapp2;
 
     @FXML
+    private Button knapp3;
+
+    @FXML
+    private Button knapp4;
+
+    @FXML
+    private Button knapp5;
+
+    @FXML
     private Text message;
 
     @FXML
@@ -160,6 +169,21 @@ public class SudokuController {
     }
 
     @FXML
+    void speil(ActionEvent event) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9/2; j++) {
+                int temp = this.board[i][j];
+                this.board[i][j] = this.board[i][8-j];
+                this.board[i][8-j] = temp;
+            }
+        }
+
+        resetOriginalBoard();
+
+        drawBoard();
+    }
+
+    @FXML
     void flip(ActionEvent event) {
         for (int i = 0; i < 9; i++) {
             for (int j = i; j < 9; j++) {
@@ -169,14 +193,47 @@ public class SudokuController {
             }
         }
 
+        resetOriginalBoard();
 
+        drawBoard();
+    }
+
+    @FXML
+    void speilBlaLinje(ActionEvent event) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = i; j < 9; j++) {
+                int temp = this.board[i][j];
+                this.board[i][j] = this.board[j][i];
+                this.board[j][i] = temp;
+            }
+        }
+
+        resetOriginalBoard();
+
+        drawBoard();
+    }
+
+    @FXML
+    void speilRodLinje(ActionEvent event) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = i; j < 9; j++) {
+                int temp = this.board[i][j];
+                this.board[i][j] = this.board[j][i];
+                this.board[j][i] = temp;
+            }
+        }
+
+        resetOriginalBoard();
+
+        drawBoard();
+    }
+
+    public void resetOriginalBoard(){
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 originalBoard[i][j] = 0; //resets board
                 originalBoard[i][j] = board[i][j]; //copies the new board
             }
         }
-
-        drawBoard();
     }
 }
