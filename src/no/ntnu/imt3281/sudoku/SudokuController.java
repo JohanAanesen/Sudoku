@@ -216,10 +216,10 @@ public class SudokuController {
     @FXML
     void speilRodLinje(ActionEvent event) {
         for (int i = 0; i < 9; i++) {
-            for (int j = i; j < 9; j++) {
+            for (int j = 0; j < 9-i; j++) {
                 int temp = this.board[i][j];
-                this.board[i][j] = this.board[j][i];
-                this.board[j][i] = temp;
+                this.board[i][j] = this.board[8-j][8-i];
+                this.board[8-j][8-i] = temp;
             }
         }
 
