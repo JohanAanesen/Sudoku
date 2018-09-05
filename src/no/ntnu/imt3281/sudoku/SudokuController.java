@@ -170,11 +170,11 @@ public class SudokuController {
 
     @FXML
     void speil(ActionEvent event) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9/2; j++) {
+        for (int i = 0; i < 9/2; i++) {
+            for (int j = 0; j < 9; j++) {
                 int temp = this.board[i][j];
-                this.board[i][j] = this.board[i][8-j];
-                this.board[i][8-j] = temp;
+                this.board[i][j] = this.board[8-i][j];
+                this.board[8-i][j] = temp;
             }
         }
 
@@ -186,10 +186,10 @@ public class SudokuController {
     @FXML
     void flip(ActionEvent event) {
         for (int i = 0; i < 9; i++) {
-            for (int j = i; j < 9; j++) {
+            for (int j = 0; j < 9/2; j++) {
                 int temp = this.board[i][j];
-                this.board[i][j] = this.board[j][i];
-                this.board[j][i] = temp;
+                this.board[i][j] = this.board[i][8-j];
+                this.board[i][8-j] = temp;
             }
         }
 
