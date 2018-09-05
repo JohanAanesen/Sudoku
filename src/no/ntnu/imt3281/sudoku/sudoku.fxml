@@ -48,10 +48,10 @@
       <ToolBar layoutY="456.0" prefHeight="40.0" prefWidth="450.0">
         <items>
           <Button fx:id="knapp1" mnemonicParsing="false" onAction="#createSudoku" text="New" />
-            <Button fx:id="knapp2" mnemonicParsing="false" onAction="#speil" text="Speil" />
+            <Button fx:id="knapp2" mnemonicParsing="false" onAction="#mirror" text="Speil" />
             <Button fx:id="knapp3" mnemonicParsing="false" onAction="#flip" text="Flip" />
-            <Button fx:id="knapp4" mnemonicParsing="false" onAction="#speilBlaLinje" text="FlipBlå" />
-            <Button fx:id="knapp5" mnemonicParsing="false" onAction="#speilRodLinje" text="FlipRød" />
+            <Button fx:id="knapp4" mnemonicParsing="false" onAction="#flipBlueLine" text="FlipBlå" />
+            <Button fx:id="knapp5" mnemonicParsing="false" onAction="#flipRedLine" text="FlipRød" />
             <Text fx:id="message" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.9367218017578" />
         </items>
       </ToolBar>
