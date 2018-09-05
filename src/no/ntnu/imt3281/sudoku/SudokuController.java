@@ -164,7 +164,7 @@ public class SudokuController {
         for (int i = 0; i < 9; i++) {
             for (int j = i; j < 9; j++) {
                 int temp = this.board[i][j];
-                this.board[i][j] = this.board[j][j];
+                this.board[i][j] = this.board[j][i];
                 this.board[j][i] = temp;
             }
         }
