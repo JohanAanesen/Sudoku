@@ -75,10 +75,10 @@ public class SudokuController {
             case "DIGIT8": nr = 8; break;
             case "DIGIT9": nr = 9; break;
             case "DIGIT0": nr = -1; break;
-            case "UP": if(select_col>0){select_col--;} break;
-            case "DOWN": if(select_col<8){select_col++;} break;
-            case "LEFT": if(select_row>0){select_row--;} break;
-            case "RIGHT": if(select_row<8){select_row++;} break;
+            case "UP": if(select_row>0){select_row--;} break;
+            case "DOWN": if(select_row<8){select_row++;} break;
+            case "LEFT": if(select_col>0){select_col--;} break;
+            case "RIGHT": if(select_col<8){select_col++;} break;
             default: nr = 0; break;
         }
 

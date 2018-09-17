@@ -52,7 +52,6 @@
             <Button fx:id="knapp3" mnemonicParsing="false" onAction="#flip" text="Flip" />
             <Button fx:id="knapp4" mnemonicParsing="false" onAction="#flipBlueLine" text="FlipBlå" />
             <Button fx:id="knapp5" mnemonicParsing="false" onAction="#flipRedLine" text="FlipRød" />
-            <Text fx:id="message" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.9367218017578" />
         </items>
       </ToolBar>
       <Canvas fx:id="canvas" height="450.0" onMouseClicked="#selectSquare" width="450.0" />

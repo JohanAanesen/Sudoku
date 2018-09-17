@@ -21,7 +21,9 @@ public class Sudoku extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sudoku.fxml"));
         primaryStage.setTitle("Sudoku");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setAlwaysOnTop(true);
         primaryStage.show();
+
     }
 
     public static void main(String[] args) {
