@@ -88,10 +88,20 @@ public class Sudoku extends Application {
         if(nr < 1){return false;}
 
         for (int i = 0; i < 9; i++) {
-            //check if number is not occurring in the same row
-            if(board[select_col][i] == nr){ legal = false;}
-            //check if number is not occurring in the same column
-            if(board[i][select_row] == nr){ legal = false; }
+            try {
+                //check if number is not occurring in the same row
+                if (board[select_col][i] == nr) {
+                    legal = false;
+                    throw new BadNumberException(select_col, i);
+                }
+                //check if number is not occurring in the same column
+                if (board[i][select_row] == nr) {
+                    legal = false;
+                    throw new BadNumberException(i, select_row);
+                }
+            }catch (BadNumberException e){
+                System.out.println("Exception: "+e.getMessage());
+            }
         }
 
         //check if number is not occurring in the same block
@@ -100,7 +110,14 @@ public class Sudoku extends Application {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if(board[blockX+i][blockY+j] == nr){ legal = false; }
+                try {
+                    if (board[blockX + i][blockY + j] == nr) {
+                        legal = false;
+                        throw new BadNumberException(blockX + i, blockY + j);
+                    }
+                }catch(BadNumberException e){
+                    System.out.println("Exception: "+e.getMessage());
+                }
             }
         }
 
@@ -120,6 +137,7 @@ public class Sudoku extends Application {
                 setNumber(8-i, j, temp);
             }
         }
+        resetOriginalBoard();
     }
     //DET ER DA FAEN IKKE SAMME KODE FUCK OFF
     protected void flip() {
@@ -134,6 +152,7 @@ public class Sudoku extends Application {
                 setNumber(i, 8-j, temp);
             }
         }
+        resetOriginalBoard();
     }
 
     protected void flipBlueLine() {
@@ -148,6 +167,7 @@ public class Sudoku extends Application {
                 setNumber(j, i, temp);
             }
         }
+        resetOriginalBoard();
     }
 
     protected void flipRedLine() {
@@ -162,5 +182,6 @@ public class Sudoku extends Application {
                 setNumber(8 - j, 8 - i, temp);
             }
         }
+        resetOriginalBoard();
     }
 }
