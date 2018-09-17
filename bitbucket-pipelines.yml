@@ -14,4 +14,4 @@ pipelines:
           - apt update
           - apt install openjfx -y
           - mvn -B verify # -B batch mode makes Maven less verbose
-         
+          - mvn test-
