@@ -14,13 +14,13 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-import static no.ntnu.imt3281.sudoku.Sudoku.readSudokuFromFile;
-
-
 public class SudokuController {
 
-    private int[][] board = new int[9][9];
-    private int[][] originalBoard = new int[9][9];
+    Sudoku sudoku = new Sudoku();
+
+
+    //private int[][] board = new int[9][9];
+    //private int[][] originalBoard = new int[9][9];
     private boolean legalNumber = true;
     private int select_row, select_col;
 
@@ -82,13 +82,13 @@ public class SudokuController {
             default: nr = 0; break;
         }
 
-        if(isLegal(nr)){
-            if(originalBoard[select_col][select_row] == 0) {
-                board[select_col][select_row] = nr;
+        if(sudoku.isLegal(select_col, select_row, nr)){
+            if(sudoku.getOriginalNumber(select_col, select_row) == 0) {
+                sudoku.setNumber(select_col, select_row, nr);
             }
         }else if(nr == -1){
-            if(originalBoard[select_col][select_row] == 0) {
-                board[select_col][select_row] = 0;
+            if(sudoku.getOriginalNumber(select_col, select_row) == 0) {
+                sudoku.setNumber(select_col, select_row, 0);
             }
         }
 
@@ -113,127 +113,50 @@ public class SudokuController {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if(board[i][j] != 0){
-                    if(originalBoard[i][j] != 0) { //original numbers gets a grey background
+                if(sudoku.getNumber(i, j) != 0){
+                    if(sudoku.getOriginalNumber(i,j) != 0) { //original numbers gets a grey background
                         gc.setFill(Color.LIGHTGRAY);
                         gc.fillRect(i * 50 + 1, j * 50 + 1, 48, 48);
                     }
                     gc.setFill(Color.BLACK);
                     gc.setFont(new Font(20d));
-                    gc.fillText(""+board[i][j], i*50d +20, j*50d+32); //drawing number to canvas
+                    gc.fillText(""+sudoku.getNumber(i,j), i*50d +20, j*50d+32); //drawing number to canvas
                 }
             }
         }
     }
 
-    private boolean isLegal(int nr){
-        boolean legal = true;
-
-        if(originalBoard[select_col][select_row] != 0){ //you can't edit a original number
-            return false;
-        }
-
-        if(nr < 1){return false;}
-
-        for (int i = 0; i < 9; i++) {
-            //check if number is not occurring in the same row
-            if(board[select_col][i] == nr){ legal = false;}
-            //check if number is not occurring in the same column
-            if(board[i][select_row] == nr){ legal = false; }
-        }
-
-        //check if number is not occurring in the same block
-        int blockX = (select_col/3)*3; //split by and time by 3 to find start of block
-        int blockY = (select_row/3)*3;
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if(board[blockX+i][blockY+j] == nr){ legal = false; }
-            }
-        }
-
-        legalNumber = legal;
-        return legal;
-    }
-
     @FXML
     void createSudoku(ActionEvent event) throws IOException {
-        board = readSudokuFromFile(); //reads new board from file
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                originalBoard[i][j] = 0; //resets board
-                originalBoard[i][j] = board[i][j]; //copies the new board
-            }
-        }
+        sudoku.readSudokuFromFile();
         drawBoard();
     }
 
     @FXML
     void mirror(ActionEvent event) {
-        for (int i = 0; i < 9/2; i++) {
-            for (int j = 0; j < 9; j++) {
-                int temp = this.board[i][j];
-                this.board[i][j] = this.board[8-i][j];
-                this.board[8-i][j] = temp;
-            }
-        }
-
-        resetOriginalBoard();
-
+        sudoku.mirror();
+        sudoku.resetOriginalBoard();
         drawBoard();
     }
 
     @FXML
     void flip(ActionEvent event) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9/2; j++) {
-                int temp = this.board[i][j];
-                this.board[i][j] = this.board[i][8-j];
-                this.board[i][8-j] = temp;
-            }
-        }
-
-        resetOriginalBoard();
-
+        sudoku.flip();
+        sudoku.resetOriginalBoard();
         drawBoard();
     }
 
     @FXML
     void flipBlueLine(ActionEvent event) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = i; j < 9; j++) {
-                int temp = this.board[i][j];
-                this.board[i][j] = this.board[j][i];
-                this.board[j][i] = temp;
-            }
-        }
-
-        resetOriginalBoard();
-
+        sudoku.flipBlueLine();
+        sudoku.resetOriginalBoard();
         drawBoard();
     }
 
     @FXML
     void flipRedLine(ActionEvent event) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9-i; j++) {
-                int temp = this.board[i][j];
-                this.board[i][j] = this.board[8-j][8-i];
-                this.board[8-j][8-i] = temp;
-            }
-        }
-
-        resetOriginalBoard();
-
+        sudoku.flipRedLine();
+        sudoku.resetOriginalBoard();
         drawBoard();
-    }
-
-    public void resetOriginalBoard(){
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                originalBoard[i][j] = 0; //resets board
-                originalBoard[i][j] = board[i][j]; //copies the new board
-            }
-        }
     }
 }
