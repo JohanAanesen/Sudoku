@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane onKeyPressed="#newInput" prefHeight="490.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="no.ntnu.imt3281.sudoku.SudokuController">
+<AnchorPane onKeyReleased="#newInput" prefHeight="490.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="no.ntnu.imt3281.sudoku.SudokuController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="150.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="150.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="150.0" layoutX="150.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="150.0" />

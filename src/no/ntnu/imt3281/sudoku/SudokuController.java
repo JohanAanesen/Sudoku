@@ -62,6 +62,7 @@ public class SudokuController {
 
     @FXML
     void newInput(KeyEvent event) {
+        //System.out.println(event.getText());
         int nr = 0;
         String nrString = ""+event.getCode();
         switch(nrString){
