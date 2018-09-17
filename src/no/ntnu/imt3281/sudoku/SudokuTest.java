@@ -83,10 +83,54 @@ public class SudokuTest {
 
     @Test
     public void mirror() {
+        Sudoku sudoku = new Sudoku();
+
+        int number1 = 5;
+        int number2 = 2;
+        int number3 = 7;
+
+        sudoku.setNumber(0,0, number1);
+        sudoku.setNumber(1,3, number2);
+        sudoku.setNumber(2,7, number3);
+
+        sudoku.mirror();
+
+        //asserting all spaces we filled earlier are now 0/empty
+        assertEquals(0, sudoku.getNumber(0, 0));
+        assertEquals(0, sudoku.getNumber(1, 3));
+        assertEquals(0, sudoku.getNumber(2, 7));
+
+        //asserting that the opposite spaces are now the numbers from earlier
+        assertEquals(number1, sudoku.getNumber(8, 0));
+        assertEquals(number2, sudoku.getNumber(8-1, 3));
+        assertEquals(number3, sudoku.getNumber(8-2, 7));
+
     }
 
     @Test
     public void flip() {
+        Sudoku sudoku = new Sudoku();
+
+        int number1 = 5;
+        int number2 = 2;
+        int number3 = 7;
+
+        sudoku.setNumber(0,0, number1);
+        sudoku.setNumber(3,1, number2);
+        sudoku.setNumber(7,2, number3);
+
+        sudoku.flip();
+
+        //asserting all spaces we filled earlier are now 0/empty
+        assertEquals(0, sudoku.getNumber(0, 0));
+        assertEquals(0, sudoku.getNumber(3, 1));
+        assertEquals(0, sudoku.getNumber(7, 1));
+
+        //asserting that the opposite spaces are now the numbers from earlier
+        assertEquals(number1, sudoku.getNumber(0, 8));
+        assertEquals(number2, sudoku.getNumber(3, 8-1));
+        assertEquals(number3, sudoku.getNumber(7, 8-2));
+
     }
 
     @Test
