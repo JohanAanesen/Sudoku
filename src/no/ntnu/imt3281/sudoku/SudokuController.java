@@ -100,7 +100,7 @@ public class SudokuController {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
 
-        System.out.println("Rad: "+select_row + "\tCol: "+select_col);
+        //System.out.println("Rad: "+select_row + "\tCol: "+select_col);
 
         //Mark selected square
         if(legalNumber) {
