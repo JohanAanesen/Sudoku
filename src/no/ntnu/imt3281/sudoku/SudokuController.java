@@ -160,4 +160,11 @@ public class SudokuController {
         sudoku.resetOriginalBoard();
         drawBoard();
     }
+
+    @FXML
+    void changeNumbers(ActionEvent event){
+        sudoku.changeNumbers();
+        
+        drawBoard();
+    }
 }

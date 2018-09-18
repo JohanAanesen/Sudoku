@@ -186,4 +186,47 @@ public class Sudoku extends Application {
         }
         resetOriginalBoard();
     }
+
+    protected void changeNumbers(){
+        //System.out.println((int)Math.floor(Math.random()*9));
+        boolean[] taken = new boolean[9];
+        for (int i = 0; i < 9; i++) {
+            boolean test = true;
+            while(test){
+                int temp = (int)Math.floor(Math.random()*9);
+                if(!taken[temp]){
+                    taken[temp] = true;
+                    //System.out.println(temp);
+                    test = false;
+                }
+            }
+        }
+
+
+        for (int k = 0; k < 9; k++) {
+
+            int numbertest = 0;
+
+            boolean test2 = true;
+            while(test2){
+                int temp = (int)Math.floor(Math.random()*9);
+                if(taken[temp]){
+                    taken[temp] = false;
+                    numbertest = temp+1;
+                    //System.out.println(temp);
+                    test2 = false;
+                }
+            }
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if(getOriginalNumber(i,j) == k+1){
+                        setNumber(i,j, numbertest);
+
+                    }
+                }
+            }
+        }
+
+    }
 }

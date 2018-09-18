@@ -52,6 +52,7 @@
             <Button fx:id="knapp3" mnemonicParsing="false" onAction="#flip" text="Flip" />
             <Button fx:id="knapp4" mnemonicParsing="false" onAction="#flipBlueLine" text="FlipBlå" />
             <Button fx:id="knapp5" mnemonicParsing="false" onAction="#flipRedLine" text="FlipRød" />
+            <Button fx:id="knapp6" mnemonicParsing="false" onAction="#changeNumbers" text="Change Numbers" />
         </items>
       </ToolBar>
       <Canvas fx:id="canvas" height="450.0" onMouseClicked="#selectSquare" width="450.0" />
