@@ -188,45 +188,45 @@ public class Sudoku extends Application {
     }
 
     protected void changeNumbers(){
-        //System.out.println((int)Math.floor(Math.random()*9));
-        boolean[] taken = new boolean[9];
+
+        boolean[] numbers = new boolean[9]; //array keeps track of which numbers are randomly assigned
+
         for (int i = 0; i < 9; i++) {
-            boolean test = true;
-            while(test){
-                int temp = (int)Math.floor(Math.random()*9);
-                if(!taken[temp]){
-                    taken[temp] = true;
-                    //System.out.println(temp);
-                    test = false;
+
+            boolean spaceLeft = true;
+
+            while(spaceLeft){              //make sure to fill all numbers 0-9
+                int rand = (int)Math.floor(Math.random()*9);
+                if(!numbers[rand]){
+                    numbers[rand] = true;
+                    spaceLeft = false;
                 }
             }
         }
 
+        for (int k = 0; k < 9; k++) {       //for every number (1-9)
 
-        for (int k = 0; k < 9; k++) {
+            int newNumber = 0;
 
-            int numbertest = 0;
-
-            boolean test2 = true;
-            while(test2){
-                int temp = (int)Math.floor(Math.random()*9);
-                if(taken[temp]){
-                    taken[temp] = false;
-                    numbertest = temp+1;
-                    //System.out.println(temp);
-                    test2 = false;
+            boolean lookingForNumber = true;
+            while(lookingForNumber){               //get a random number that hasn't been taken before
+                int temp = (int)Math.floor(Math.random()*9);    //get random number
+                if(numbers[temp]){                              //make sure it hasn't been taken before
+                    numbers[temp] = false;                      //take it
+                    newNumber = temp+1;                         //set the new number
+                    lookingForNumber = false;                   //not looking for number anymore
                 }
             }
 
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 9; i++) {                       //iterate all numbers in sudoku
                 for (int j = 0; j < 9; j++) {
-                    if(getOriginalNumber(i,j) == k+1){
-                        setNumber(i,j, numbertest);
+                    if(getOriginalNumber(i,j) == k+1){          //if a number in originalNumber is = k
+                        setNumber(i,j, newNumber);              //set that number = newNumber
 
                     }
                 }
             }
         }
-
+        resetOriginalBoard();                                   //reset Original Board
     }
 }

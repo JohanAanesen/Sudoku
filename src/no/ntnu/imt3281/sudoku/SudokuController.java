@@ -136,35 +136,30 @@ public class SudokuController {
     @FXML
     void mirror(ActionEvent event) {
         sudoku.mirror();
-        sudoku.resetOriginalBoard();
         drawBoard();
     }
 
     @FXML
     void flip(ActionEvent event) {
         sudoku.flip();
-        sudoku.resetOriginalBoard();
         drawBoard();
     }
 
     @FXML
     void flipBlueLine(ActionEvent event) {
         sudoku.flipBlueLine();
-        sudoku.resetOriginalBoard();
         drawBoard();
     }
 
     @FXML
     void flipRedLine(ActionEvent event) {
         sudoku.flipRedLine();
-        sudoku.resetOriginalBoard();
         drawBoard();
     }
 
     @FXML
     void changeNumbers(ActionEvent event){
         sudoku.changeNumbers();
-        
         drawBoard();
     }
 }
