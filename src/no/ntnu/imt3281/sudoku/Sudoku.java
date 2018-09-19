@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.IntStream;
 
 
 //TODO: Internationalisering
@@ -112,6 +114,32 @@ public class Sudoku extends Application {
 
         if(nr < 1){return false;} //number must be > 0
 
+        try{
+            IterateRow iterateRow = new IterateRow(select_row);
+            while(iterateRow.hasNext()){
+                if((int)iterateRow.next() == nr){
+                    legal = false;
+                    throw new BadNumberException(iterateRow.pos-1, select_row);
+                }
+            }
+            IterateCol iterateCol = new IterateCol(select_col);
+            while(iterateCol.hasNext()){
+                if((int)iterateCol.next() == nr){
+                    legal = false;
+                    throw new BadNumberException(select_col, iterateCol.pos-1);
+                }
+            }
+            IterateBox iterateBox = new IterateBox(select_col, select_row);
+            while(iterateBox.hasNext()){
+                if((int)iterateBox.next() == nr){
+                    legal = false;
+                    throw new BadNumberException(iterateBox.col+iterateBox.posy, iterateBox.row+iterateBox.posx);
+                }
+            }
+        }catch (BadNumberException e){
+            System.out.println("Exception: "+e.getMessage());
+        }
+        /*
         for (int i = 0; i < 9; i++) {
             try {
                 //check if number is not occurring in the same row
@@ -145,7 +173,7 @@ public class Sudoku extends Application {
                 }
             }
         }
-
+        */
         return legal;
     }
 
@@ -263,5 +291,94 @@ public class Sudoku extends Application {
             }
         }
         resetOriginalBoard();                                   //reset Original Board
+    }
+
+    public class IterateRow implements Iterator{
+        int row;
+        int pos;
+
+        public IterateRow(int row){
+            this.row = row;
+            this.pos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(this.pos < 9){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        @Override
+        public Object next() {
+            return board[pos++][row];
+        }
+    }
+
+    public class IterateCol implements Iterator{
+        int col;
+        int pos;
+
+        public IterateCol(int col){
+            this.col = col;
+            this.pos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(this.pos < 9){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        @Override
+        public Object next() {
+            return board[col][pos++];
+        }
+    }
+
+    public class IterateBox implements Iterator{
+        int row,col;
+        int posx, posy;
+        int pos;
+
+        public IterateBox(int col, int row){
+            this.col = col/3*3;
+            this.row = row/3*3;
+            this.posx = 0;
+            this.posy = 0;
+            this.pos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(pos < 9){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        @Override
+        public Object next() {
+            switch(pos){
+                case 0: posx = 0; posy = 0; break;
+                case 1: posx = 1; posy = 0; break;
+                case 2: posx = 2; posy = 0; break;
+                case 3: posx = 0; posy = 1; break;
+                case 4: posx = 1; posy = 1; break;
+                case 5: posx = 2; posy = 1; break;
+                case 6: posx = 0; posy = 2; break;
+                case 7: posx = 1; posy = 2; break;
+                case 8: posx = 2; posy = 2; break;
+            }
+            pos++;
+            return board[col+posy][row+posx];
+
+        }
     }
 }
