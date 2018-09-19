@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class Sudoku extends Application {
@@ -23,7 +24,6 @@ public class Sudoku extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setAlwaysOnTop(true);
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
@@ -43,6 +43,11 @@ public class Sudoku extends Application {
     }
 
 
+    /**
+     * Title: ReadSudokuFromFile
+     * TODO: redo function :)
+     * @throws IOException
+     */
     protected void readSudokuFromFile() throws IOException {
         File file = new File("src/no/ntnu/imt3281/sudoku/sudokus/sudoku1.json");
         byte[] bytes = new byte[(int) file.length()];
@@ -71,6 +76,10 @@ public class Sudoku extends Application {
         this.board = board;
     }
 
+    /**
+     * Title: ResetOriginalBoard
+     * Desc: Resets OriginalBoard to be equal Board before it gets tampered with :)
+     */
     protected void resetOriginalBoard(){
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -80,6 +89,16 @@ public class Sudoku extends Application {
         }
     }
 
+    /**
+     * Title: IsLegal
+     * Desc: Asserts that a number is a legal number in a given sudoku tile,
+     *       will check that same number is not occuring on the same row, column
+     *       or 'box'
+     * @param select_col
+     * @param select_row
+     * @param nr
+     * @return
+     */
     protected boolean isLegal(int select_col, int select_row, int nr){
         boolean legal = true;
 
@@ -126,7 +145,10 @@ public class Sudoku extends Application {
         return legal;
     }
 
-
+    /**
+     * Title: Mirror
+     * Desc: the function mirrors the board, e.g top-left number becomes top-right
+     */
     protected void mirror() {
         for (int i = 0; i < 9/2; i++) {
             for (int j = 0; j < 9; j++) {
@@ -141,7 +163,11 @@ public class Sudoku extends Application {
         }
         resetOriginalBoard();
     }
-    //DET ER DA FAEN IKKE SAMME KODE FUCK OFF
+
+    /**
+     * Title: Flip
+     * Desc: the function flips the board, e.g top-left becomes bottom-left
+     */
     protected void flip() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9/2; j++) {
@@ -157,6 +183,12 @@ public class Sudoku extends Application {
         resetOriginalBoard();
     }
 
+    /**
+     * Title: FlipBlueLine
+     * Desc: the function flips the board over the 'blue line'
+     *       (line from top-left to bottom-right corner)
+     *       e.g bottom-left number becomes top-right number
+     */
     protected void flipBlueLine() {
         for (int i = 0; i < 9; i++) {
             for (int j = i; j < 9; j++) {
@@ -172,6 +204,12 @@ public class Sudoku extends Application {
         resetOriginalBoard();
     }
 
+    /**
+     * Title: FlipRedLine
+     * Desc: the function flips the board over the 'red line'
+     *       (line from bottom-left to top-right corner)
+     *       e.g top-left number becomes bottom-right number
+     */
     protected void flipRedLine() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9 - i; j++) {
@@ -187,22 +225,15 @@ public class Sudoku extends Application {
         resetOriginalBoard();
     }
 
+    /**
+     * Title: ChangeNumbers
+     * Desc: the function will first create
+     */
     protected void changeNumbers(){
 
-        boolean[] numbers = new boolean[9]; //array keeps track of which numbers are randomly assigned
+        boolean[] numbers = new boolean[9]; //array keeps track of which numbers have been randomly assigned
 
-        for (int i = 0; i < 9; i++) {
-
-            boolean spaceLeft = true;
-
-            while(spaceLeft){              //make sure to fill all numbers 0-9
-                int rand = (int)Math.floor(Math.random()*9);
-                if(!numbers[rand]){
-                    numbers[rand] = true;
-                    spaceLeft = false;
-                }
-            }
-        }
+        Arrays.fill(numbers, Boolean.TRUE);
 
         for (int k = 0; k < 9; k++) {       //for every number (1-9)
 
