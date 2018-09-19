@@ -16,11 +16,8 @@ import java.io.IOException;
 
 public class SudokuController {
 
-    Sudoku sudoku = new Sudoku();
+    private Sudoku sudoku = new Sudoku();
 
-
-    //private int[][] board = new int[9][9];
-    //private int[][] originalBoard = new int[9][9];
     private boolean legalNumber = true;
     private int select_row, select_col;
 
@@ -64,33 +61,73 @@ public class SudokuController {
     void newInput(KeyEvent event) {
         //System.out.println(event.getText());
         int nr = 0;
-        String nrString = ""+event.getCode();
-        switch(nrString){
-            case "DIGIT1": nr = 1; break;
-            case "DIGIT2": nr = 2; break;
-            case "DIGIT3": nr = 3; break;
-            case "DIGIT4": nr = 4; break;
-            case "DIGIT5": nr = 5; break;
-            case "DIGIT6": nr = 6; break;
-            case "DIGIT7": nr = 7; break;
-            case "DIGIT8": nr = 8; break;
-            case "DIGIT9": nr = 9; break;
-            case "DIGIT0": nr = -1; break;
-            case "UP": if(select_row>0){select_row--;} break;
-            case "DOWN": if(select_row<8){select_row++;} break;
-            case "LEFT": if(select_col>0){select_col--;} break;
-            case "RIGHT": if(select_col<8){select_col++;} break;
-            default: nr = 0; break;
+        String nrString = "" + event.getCode();
+        switch (nrString) {
+            case "DIGIT1":
+                nr = 1;
+                break;
+            case "DIGIT2":
+                nr = 2;
+                break;
+            case "DIGIT3":
+                nr = 3;
+                break;
+            case "DIGIT4":
+                nr = 4;
+                break;
+            case "DIGIT5":
+                nr = 5;
+                break;
+            case "DIGIT6":
+                nr = 6;
+                break;
+            case "DIGIT7":
+                nr = 7;
+                break;
+            case "DIGIT8":
+                nr = 8;
+                break;
+            case "DIGIT9":
+                nr = 9;
+                break;
+            case "DIGIT0":
+                nr = -1;
+                break;
+            case "UP":
+                if (select_row > 0) {
+                    select_row--;
+                }
+                break;
+            case "DOWN":
+                if (select_row < 8) {
+                    select_row++;
+                }
+                break;
+            case "LEFT":
+                if (select_col > 0) {
+                    select_col--;
+                }
+                break;
+            case "RIGHT":
+                if (select_col < 8) {
+                    select_col++;
+                }
+                break;
+            default:
+                nr = 0;
+                break;
         }
 
-        if(sudoku.isLegal(select_col, select_row, nr)){
-            if(sudoku.getOriginalNumber(select_col, select_row) == 0) {
+        if (sudoku.isLegal(select_col, select_row, nr)) {
+            if (sudoku.getOriginalNumber(select_col, select_row) == 0) {
                 sudoku.setNumber(select_col, select_row, nr);
             }
-        }else if(nr == -1){
-            if(sudoku.getOriginalNumber(select_col, select_row) == 0) {
+        } else if (nr == -1) {
+            if (sudoku.getOriginalNumber(select_col, select_row) == 0) {
                 sudoku.setNumber(select_col, select_row, 0);
             }
+        }else if(sudoku.getNumber(select_col, select_row) != nr){
+            legalNumber = false;
         }
 
         drawBoard();

@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.util.Arrays;
 
 
+//TODO: Internationalisering
+//TODO: JAVADOC
+//TODO: Spør Øivind om tests are k
+//TODO: Gz when finished :)
+
 public class Sudoku extends Application {
 
     protected int[][] board = new int[9][9];
