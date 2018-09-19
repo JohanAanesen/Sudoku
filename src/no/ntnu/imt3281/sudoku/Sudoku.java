@@ -15,7 +15,6 @@ import java.util.Arrays;
 //TODO: Internationalisering
 //TODO: JAVADOC
 //TODO: Spør Øivind om tests are k
-//TODO: Gz when finished :)
 
 public class Sudoku extends Application {
 
@@ -111,7 +110,7 @@ public class Sudoku extends Application {
             return false;
         }
 
-        if(nr < 1){return false;}
+        if(nr < 1){return false;} //number must be > 0
 
         for (int i = 0; i < 9; i++) {
             try {

@@ -40,10 +40,10 @@ public class SudokuController {
     private Button knapp5;
 
     @FXML
-    private Text message;
+    private Canvas canvas;
 
     @FXML
-    private Canvas canvas;
+    private Text text1;
 
     @FXML
     void selectSquare(MouseEvent event) {
@@ -130,7 +130,36 @@ public class SudokuController {
             legalNumber = false;
         }
 
-        drawBoard();
+        //Check if user has finished board
+        //TODO: Prettify this part holy shit i suck
+        int count = 0;
+        int countOriginal = 0;
+        boolean allCorrect = true;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                if(sudoku.getOriginalNumber(i,j) != 0){countOriginal++;}
+
+                if(sudoku.getNumber(i,j) != 0 && sudoku.getOriginalNumber(i,j) == 0){
+                    count++;
+
+                    int tempNr = sudoku.getNumber(i,j);
+
+                    sudoku.setNumber(i,j, 0);
+
+                    if(!sudoku.isLegal(i,j,tempNr)){allCorrect = false;}
+
+                    sudoku.setNumber(i,j,tempNr);
+                }
+            }
+        }
+
+        if(allCorrect){
+            if(count + countOriginal == 81){
+                text1.setText("You Won!");
+            }
+        }
+        drawBoard(); //update board
     }
 
     @FXML
