@@ -49,9 +49,9 @@ public class Sudoku extends Application {
 
 
     /**
-     * Title: ReadSudokuFromFile
+     * Title:   ReadSudokuFromFile
      * TODO: redo function :)
-     * @throws IOException
+     * @throws  IOException     IOException if something is wrong reading file
      */
     protected void readSudokuFromFile() throws IOException {
         File file = new File("src/no/ntnu/imt3281/sudoku/sudokus/sudoku1.json");
@@ -82,8 +82,8 @@ public class Sudoku extends Application {
     }
 
     /**
-     * Title: ResetOriginalBoard
-     * Desc: Resets OriginalBoard to be equal Board before it gets tampered with :)
+     * Title:   resetOriginalBoard
+     * Desc:    Resets OriginalBoard to be equal Board before it gets tampered with :)
      */
     protected void resetOriginalBoard(){
         for (int i = 0; i < 9; i++) {
@@ -95,14 +95,14 @@ public class Sudoku extends Application {
     }
 
     /**
-     * Title: IsLegal
-     * Desc: Asserts that a number is a legal number in a given sudoku tile,
-     *       will check that same number is not occuring on the same row, column
-     *       or 'box'
-     * @param select_col
-     * @param select_row
-     * @param nr
-     * @return
+     * Title:   isLegal
+     * Desc:    Asserts that a number is a legal number in a given sudoku tile,
+     *          will check that same number is not occuring on the same row, column
+     *          or 'box'
+     * @param   select_col  selected column
+     * @param   select_row  selected row
+     * @param   nr          number from input
+     * @return  boolean     true|false
      */
     protected boolean isLegal(int select_col, int select_row, int nr){
         boolean legal = true;
@@ -111,20 +111,9 @@ public class Sudoku extends Application {
             return false;
         }
 
-        if(nr < 1){return false;} //number must be > 0
+        if(board[select_col][select_row] == nr){return true;} //if number is already there then it must be legal
 
-        //Check row
-        try{
-            IterateRow iterateRow = new IterateRow(select_row);
-            while(iterateRow.hasNext()){
-                if((int)iterateRow.next() == nr){
-                    legal = false;
-                    throw new BadNumberException(iterateRow.pos-1, select_row);
-                }
-            }
-        }catch (BadNumberException e){
-            System.out.println("Exception: "+e.getMessage());
-        }
+        if(nr < 1){return false;} //number must be > 0
 
         //Check Column
         try{
@@ -136,7 +125,20 @@ public class Sudoku extends Application {
                 }
             }
         }catch (BadNumberException e){
-            System.out.println("Exception: "+e.getMessage());
+            System.out.println("Col Exception: "+e.getMessage());
+        }
+
+        //Check row
+        try{
+            IterateRow iterateRow = new IterateRow(select_row);
+            while(iterateRow.hasNext()){
+                if((int)iterateRow.next() == nr){
+                    legal = false;
+                    throw new BadNumberException(iterateRow.pos-1, select_row);
+                }
+            }
+        }catch (BadNumberException e){
+            System.out.println("Row Exception: "+e.getMessage());
         }
 
         //Check box
@@ -149,22 +151,43 @@ public class Sudoku extends Application {
                 }
             }
         }catch (BadNumberException e){
-            System.out.println("Exception: "+e.getMessage());
+            System.out.println("Box Exception: "+e.getMessage());
         }
         return legal;
     }
 
     /**
-     * Title: Mirror
-     * Desc: the function mirrors the board, e.g top-left number becomes top-right
+     * Title:   isFinished
+     * Desc:    The function iterates the board and returns true if it is completed, false if not
+     * @return  boolean     true|false
+     */
+    protected boolean isFinished(){
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if(getNumber(i,j) == 0) {
+
+                    return false; //sudoku is not complete if any tile is 0
+
+                }else if(getNumber(i,j) != 0 && getOriginalNumber(i,j) == 0){
+
+                    if(!isLegal(i,j, getNumber(i,j))){
+                        return false; //if any tile is not legal, then it is not completed.
+                    }
+
+                }
+            }
+        }
+
+        return true; //all tiles are legal and filled, sudoku is complete :)
+    }
+
+    /**
+     * Title:   mirror
+     * Desc:    The function mirrors the board, e.g top-left number becomes top-right
      */
     protected void mirror() {
         for (int i = 0; i < 9/2; i++) {
             for (int j = 0; j < 9; j++) {
-                //int temp = this.board[i][j];
-                //this.board[i][j] = this.board[8-i][j];
-                //this.board[8-i][j] = temp;
-
                 int temp = getNumber(i, j);
                 setNumber(i, j, getNumber(8-i, j));
                 setNumber(8-i, j, temp);
@@ -174,16 +197,12 @@ public class Sudoku extends Application {
     }
 
     /**
-     * Title: Flip
-     * Desc: the function flips the board, e.g top-left becomes bottom-left
+     * Title:   flip
+     * Desc:    The function flips the board, e.g top-left becomes bottom-left
      */
     protected void flip() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9/2; j++) {
-                //int temp = this.board[i][j];
-                //this.board[i][j] = this.board[i][8-j];
-                //this.board[i][8-j] = temp;
-
                 int temp = getNumber(i, j);
                 setNumber(i, j, getNumber(i, 8-j));
                 setNumber(i, 8-j, temp);
@@ -193,18 +212,14 @@ public class Sudoku extends Application {
     }
 
     /**
-     * Title: FlipBlueLine
-     * Desc: the function flips the board over the 'blue line'
-     *       (line from top-left to bottom-right corner)
-     *       e.g bottom-left number becomes top-right number
+     * Title:   flipBlueLine
+     * Desc:    The function flips the board over the 'blue line'
+     *          (line from top-left to bottom-right corner)
+     *          e.g bottom-left number becomes top-right number
      */
     protected void flipBlueLine() {
         for (int i = 0; i < 9; i++) {
             for (int j = i; j < 9; j++) {
-                //int temp = this.board[i][j];
-                //this.board[i][j] = this.board[j][i];
-                //this.board[j][i] = temp;
-
                 int temp = getNumber(i, j);
                 setNumber(i, j, getNumber(j, i));
                 setNumber(j, i, temp);
@@ -214,18 +229,14 @@ public class Sudoku extends Application {
     }
 
     /**
-     * Title: FlipRedLine
-     * Desc: the function flips the board over the 'red line'
-     *       (line from bottom-left to top-right corner)
-     *       e.g top-left number becomes bottom-right number
+     * Title:   flipRedLine
+     * Desc:    The function flips the board over the 'red line'
+     *          (line from bottom-left to top-right corner)
+     *          e.g top-left number becomes bottom-right number
      */
     protected void flipRedLine() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9 - i; j++) {
-                //int temp = this.board[i][j];
-                //this.board[i][j] = this.board[8-j][8-i];
-                //this.board[8-j][8-i] = temp;
-
                 int temp = getNumber(i, j);
                 setNumber(i, j, getNumber(8 - j, 8 - i));
                 setNumber(8 - j, 8 - i, temp);
@@ -235,8 +246,8 @@ public class Sudoku extends Application {
     }
 
     /**
-     * Title: ChangeNumbers
-     * Desc: the function will first create
+     * Title:   changeNumbers
+     * Desc:    The function will first create
      */
     protected void changeNumbers(){
 
@@ -272,8 +283,8 @@ public class Sudoku extends Application {
 
 
     /**
-     * Class IterateRow
-     * Desc: custom iterator for row
+     * Class iterateRow
+     * Desc: Custom iterator for row
      */
     public class IterateRow implements Iterator{
         int row;
@@ -300,8 +311,8 @@ public class Sudoku extends Application {
     }
 
     /**
-     * Class IterateCol
-     * Desc: custom iterator for col
+     * Class iterateCol
+     * Desc: Custom iterator for col
      */
     public class IterateCol implements Iterator{
         int col;
@@ -329,7 +340,7 @@ public class Sudoku extends Application {
 
     /**
      * Class IterateBox
-     * Desc: custom iterator for box
+     * Desc: Custom iterator for box
      */
     public class IterateBox implements Iterator{
         int row,col;

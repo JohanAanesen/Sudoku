@@ -131,34 +131,14 @@ public class SudokuController {
         }
 
         //Check if user has finished board
-        //TODO: Prettify and move this logic to sudoku class
-        int count = 0;
-        int countOriginal = 0;
-        boolean allCorrect = true;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        boolean finished = sudoku.isFinished();
 
-                if(sudoku.getOriginalNumber(i,j) != 0){countOriginal++;}
-
-                if(sudoku.getNumber(i,j) != 0 && sudoku.getOriginalNumber(i,j) == 0){
-                    count++;
-
-                    int tempNr = sudoku.getNumber(i,j);
-
-                    sudoku.setNumber(i,j, 0);
-
-                    if(!sudoku.isLegal(i,j,tempNr)){allCorrect = false;}
-
-                    sudoku.setNumber(i,j,tempNr);
-                }
-            }
+        if(finished){
+            text1.setText("You Won!");
+        }else{
+            text1.setText("");
         }
 
-        if(allCorrect){
-            if(count + countOriginal == 81){
-                text1.setText("You Won!");
-            }
-        }
         drawBoard(); //update board
     }
 
