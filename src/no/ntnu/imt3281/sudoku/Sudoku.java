@@ -153,6 +153,7 @@ public class Sudoku extends Application {
         }catch (BadNumberException e){
             System.out.println("Box Exception: "+e.getMessage());
         }
+
         return legal;
     }
 
