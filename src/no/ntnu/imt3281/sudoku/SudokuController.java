@@ -131,7 +131,7 @@ public class SudokuController {
         }
 
         //Check if user has finished board
-        //TODO: Prettify this part holy shit i suck
+        //TODO: Prettify and move this logic to sudoku class
         int count = 0;
         int countOriginal = 0;
         boolean allCorrect = true;

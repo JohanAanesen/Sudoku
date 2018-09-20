@@ -16,7 +16,6 @@ import java.util.stream.IntStream;
 
 //TODO: Internationalisering
 //TODO: JAVADOC
-//TODO: Spør Øivind om tests are k
 
 public class Sudoku extends Application {
 
@@ -114,6 +113,7 @@ public class Sudoku extends Application {
 
         if(nr < 1){return false;} //number must be > 0
 
+        //Check row
         try{
             IterateRow iterateRow = new IterateRow(select_row);
             while(iterateRow.hasNext()){
@@ -122,6 +122,12 @@ public class Sudoku extends Application {
                     throw new BadNumberException(iterateRow.pos-1, select_row);
                 }
             }
+        }catch (BadNumberException e){
+            System.out.println("Exception: "+e.getMessage());
+        }
+
+        //Check Column
+        try{
             IterateCol iterateCol = new IterateCol(select_col);
             while(iterateCol.hasNext()){
                 if((int)iterateCol.next() == nr){
@@ -129,6 +135,12 @@ public class Sudoku extends Application {
                     throw new BadNumberException(select_col, iterateCol.pos-1);
                 }
             }
+        }catch (BadNumberException e){
+            System.out.println("Exception: "+e.getMessage());
+        }
+
+        //Check box
+        try{
             IterateBox iterateBox = new IterateBox(select_col, select_row);
             while(iterateBox.hasNext()){
                 if((int)iterateBox.next() == nr){
@@ -139,41 +151,6 @@ public class Sudoku extends Application {
         }catch (BadNumberException e){
             System.out.println("Exception: "+e.getMessage());
         }
-        /*
-        for (int i = 0; i < 9; i++) {
-            try {
-                //check if number is not occurring in the same row
-                if (board[select_col][i] == nr) {
-                    legal = false;
-                    throw new BadNumberException(select_col, i);
-                }
-                //check if number is not occurring in the same column
-                if (board[i][select_row] == nr) {
-                    legal = false;
-                    throw new BadNumberException(i, select_row);
-                }
-            }catch (BadNumberException e){
-                System.out.println("Exception: "+e.getMessage());
-            }
-        }
-
-        //check if number is not occurring in the same block
-        int blockX = (select_col/3)*3; //split by and time by 3 to find start of block
-        int blockY = (select_row/3)*3;
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                try {
-                    if (board[blockX + i][blockY + j] == nr) {
-                        legal = false;
-                        throw new BadNumberException(blockX + i, blockY + j);
-                    }
-                }catch(BadNumberException e){
-                    System.out.println("Exception: "+e.getMessage());
-                }
-            }
-        }
-        */
         return legal;
     }
 
@@ -293,6 +270,11 @@ public class Sudoku extends Application {
         resetOriginalBoard();                                   //reset Original Board
     }
 
+
+    /**
+     * Class IterateRow
+     * Desc: custom iterator for row
+     */
     public class IterateRow implements Iterator{
         int row;
         int pos;
@@ -317,6 +299,10 @@ public class Sudoku extends Application {
         }
     }
 
+    /**
+     * Class IterateCol
+     * Desc: custom iterator for col
+     */
     public class IterateCol implements Iterator{
         int col;
         int pos;
@@ -341,6 +327,10 @@ public class Sudoku extends Application {
         }
     }
 
+    /**
+     * Class IterateBox
+     * Desc: custom iterator for box
+     */
     public class IterateBox implements Iterator{
         int row,col;
         int posx, posy;
