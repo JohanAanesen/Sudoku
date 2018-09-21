@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
 
@@ -24,7 +26,10 @@ public class Sudoku extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sudoku.fxml"));
+
+        ResourceBundle bundle = ResourceBundle.getBundle("no.ntnu.imt3281.sudoku.MessagesBundle", new Locale("en", "US"));
+
+        Parent root = FXMLLoader.load(getClass().getResource("sudoku.fxml"), bundle);
         primaryStage.setTitle("Sudoku");
         primaryStage.setScene(new Scene(root));
         primaryStage.setAlwaysOnTop(true);

@@ -134,9 +134,9 @@ public class SudokuController {
         boolean finished = sudoku.isFinished();
 
         if(finished){
-            text1.setText("You Won!");
+            text1.setOpacity(1); //show you won text
         }else{
-            text1.setText("");
+            text1.setOpacity(0); //hide text
         }
 
         drawBoard(); //update board

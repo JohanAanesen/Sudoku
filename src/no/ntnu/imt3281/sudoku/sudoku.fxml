@@ -48,16 +48,17 @@
       </GridPane>
       <ToolBar layoutY="456.0" prefHeight="40.0" prefWidth="450.0">
         <items>
-          <Button fx:id="knapp1" mnemonicParsing="false" onAction="#createSudoku" text="New" />
-            <Button fx:id="knapp2" mnemonicParsing="false" onAction="#mirror" text="Speil" />
-            <Button fx:id="knapp3" mnemonicParsing="false" onAction="#flip" text="Flip" />
-            <Button fx:id="knapp4" mnemonicParsing="false" onAction="#flipBlueLine" text="FlipBlå" />
-            <Button fx:id="knapp5" mnemonicParsing="false" onAction="#flipRedLine" text="FlipRød" />
-            <Button fx:id="knapp6" mnemonicParsing="false" onAction="#changeNumbers" text="Change Numbers" />
-            <Text fx:id="text1">
+          <Button fx:id="knapp1" mnemonicParsing="false" onAction="#createSudoku" text="%New" />
+            <Button fx:id="knapp2" mnemonicParsing="false" onAction="#mirror" text="%Mirror" />
+            <Button fx:id="knapp3" mnemonicParsing="false" onAction="#flip" text="%Flip" />
+            <Button fx:id="knapp4" mnemonicParsing="false" onAction="#flipBlueLine" text="%FlipBlue" />
+            <Button fx:id="knapp5" mnemonicParsing="false" onAction="#flipRedLine" text="%FlipRed" />
+            <Button fx:id="knapp6" mnemonicParsing="false" onAction="#changeNumbers" text="%ChangeNumbers" />
+            <Text fx:id="text1" text="%YouWon" opacity="0">
                <font>
-                  <Font size="18.0" />
-               </font></Text>
+                  <Font size="14.0" />
+               </font>
+            </Text>
         </items>
       </ToolBar>
       <Canvas fx:id="canvas" height="450.0" onMouseClicked="#selectSquare" width="450.0" />
