@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
 
-//TODO: Internationalisering
+//TODO: Internationalisering - make it changeable :)
 //TODO: JAVADOC
 
 public class Sudoku extends Application {

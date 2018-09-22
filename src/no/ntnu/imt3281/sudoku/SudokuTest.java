@@ -3,7 +3,6 @@ package no.ntnu.imt3281.sudoku;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -181,6 +180,25 @@ public class SudokuTest {
         assertEquals(number1, sudoku.getNumber(8, 8));
         assertEquals(number2, sudoku.getNumber(7, 8));
         assertEquals(number3, sudoku.getNumber(8, 7));
+    }
+
+    @Test
+    public void changeNumbers(){
+        Sudoku sudoku = new Sudoku();
+
+        sudoku.setNumber(0,0, 5);   //set 2 pairs of numbers in the board
+        sudoku.setNumber(8,8,5);
+
+        sudoku.setNumber(0,1, 7);
+        sudoku.setNumber(8,7,7);
+
+        sudoku.changeNumbers(); //change numbers
+
+        int number1 = sudoku.getNumber(0,0); //get the number of the first tile
+        int number2 = sudoku.getNumber(0,1); //get the number of the 2nd tile/pair
+
+        assertEquals(number1, sudoku.getNumber(8,8));   //assert equal to its mate
+        assertEquals(number2, sudoku.getNumber(8,7));   //same
     }
 
     @Test
