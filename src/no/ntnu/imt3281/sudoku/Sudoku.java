@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.stream.IntStream;
 
 
 //TODO: Internationalisering - make it changeable :)
@@ -27,9 +26,9 @@ public class Sudoku extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        ResourceBundle bundle = ResourceBundle.getBundle("no.ntnu.imt3281.sudoku.MessagesBundle", new Locale("en", "US"));
+        ResourceBundle bundle = ResourceBundle.getBundle("MessagesBundle", new Locale("en", "US"));
 
-        Parent root = FXMLLoader.load(getClass().getResource("sudoku.fxml"), bundle);
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sudoku.fxml"), bundle);
         primaryStage.setTitle("Sudoku");
         primaryStage.setScene(new Scene(root));
         primaryStage.setAlwaysOnTop(true);
