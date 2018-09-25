@@ -9,15 +9,6 @@ import static org.junit.Assert.*;
 public class SudokuTest {
 
     @Test
-    public void start() {
-
-    }
-
-    @Test
-    public void main() {
-    }
-
-    @Test
     public void getNumber() {
         Sudoku sudoku = new Sudoku();
         sudoku.setNumber(5,5, 5);
@@ -71,8 +62,9 @@ public class SudokuTest {
         Sudoku sudoku = new Sudoku();
         boolean legal;
         sudoku.setNumber(0,0, 1);
+        sudoku.setNumber(3,1, 1);
 
-        legal = sudoku.isLegal(0,1, 1);
+        legal = sudoku.isLegal(0,1, 1); //should trigger every exception
 
         assertFalse(legal);
 

@@ -1,7 +1,8 @@
 package no.ntnu.imt3281.sudoku;
 
 public class BadNumberException extends ArithmeticException {
-    private int x,y;
+    final int x;
+    final int y;
 
     public BadNumberException (int x, int y) {
         this.x = x;

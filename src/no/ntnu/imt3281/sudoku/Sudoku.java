@@ -9,16 +9,13 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-
-//TODO: Internationalisering - make it changeable :)
-//TODO: JAVADOC
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Sudoku extends Application {
+
+    private static final Logger LOGGER = Logger.getLogger( Sudoku.class.getName() );
 
     protected int[][] board = new int[9][9];
     protected int[][] originalBoard = new int[9][9];
@@ -54,35 +51,49 @@ public class Sudoku extends Application {
 
     /**
      * Title:   ReadSudokuFromFile
-     * TODO: redo function :)
      * @throws  IOException     IOException if something is wrong reading file
      */
     protected void readSudokuFromFile() throws IOException {
-        File file = new File("src/no/ntnu/imt3281/sudoku/sudokus/sudoku1.json");
+        File file = new File("sudoku1.json");
         byte[] bytes = new byte[(int) file.length()];
-        FileInputStream fis = new FileInputStream(file);
-        fis.read(bytes);
-        fis.close();
+        FileInputStream fis = null;
+        int len = 0;
+
+
+        try (FileInputStream fis2 = new FileInputStream(file)){
+                fis = fis2;
+                len = fis.read(bytes);
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+        } finally {
+            if(fis != null) {
+                fis.close();
+            }
+        }
+
+        if(len != bytes.length){
+            return;
+        }
 
         String[] valueStr = new String(bytes).trim().split("[^0-9]+");
 
-        int[][] board = new int[9][9];
+        int[][] newBoard = new int[9][9];
 
         int count = 1;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board[i][j] = Integer.parseInt(valueStr[count++]);
+                newBoard[i][j] = Integer.parseInt(valueStr[count++]);
             }
         }
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 originalBoard[i][j] = 0; //resets board
-                originalBoard[i][j] = board[i][j]; //copies the new board
+                originalBoard[i][j] = newBoard[i][j]; //copies the new board
             }
         }
 
-        this.board = board;
+        this.board = newBoard;
     }
 
     /**
@@ -103,51 +114,51 @@ public class Sudoku extends Application {
      * Desc:    Asserts that a number is a legal number in a given sudoku tile,
      *          will check that same number is not occuring on the same row, column
      *          or 'box'
-     * @param   select_col  selected column
-     * @param   select_row  selected row
+     * @param   selectCol  selected column
+     * @param   selectRow  selected row
      * @param   nr          number from input
      * @return  boolean     true|false
      */
-    protected boolean isLegal(int select_col, int select_row, int nr){
+    protected boolean isLegal(int selectCol, int selectRow, int nr){
         boolean legal = true;
 
-        if(originalBoard[select_col][select_row] != 0){ //you can't edit a original number
+        if(originalBoard[selectCol][selectRow] != 0){ //you can't edit a original number
             return false;
         }
 
-        if(board[select_col][select_row] == nr){return true;} //if number is already there then it must be legal
+        if(board[selectCol][selectRow] == nr){return true;} //if number is already there then it must be legal
 
         if(nr < 1){return false;} //number must be > 0
 
         //Check Column
         try{
-            IterateCol iterateCol = new IterateCol(select_col);
+            IterateCol iterateCol = new IterateCol(selectCol);
             while(iterateCol.hasNext()){
                 if((int)iterateCol.next() == nr){
                     legal = false;
-                    throw new BadNumberException(select_col, iterateCol.pos-1);
+                    throw new BadNumberException(selectCol, iterateCol.pos-1);
                 }
             }
         }catch (BadNumberException e){
-            System.out.println("Col Exception: "+e.getMessage());
+            LOGGER.log(Level.SEVERE, "Col Exception: "+e.getMessage());
         }
 
         //Check row
         try{
-            IterateRow iterateRow = new IterateRow(select_row);
+            IterateRow iterateRow = new IterateRow(selectRow);
             while(iterateRow.hasNext()){
                 if((int)iterateRow.next() == nr){
                     legal = false;
-                    throw new BadNumberException(iterateRow.pos-1, select_row);
+                    throw new BadNumberException(iterateRow.pos-1, selectRow);
                 }
             }
         }catch (BadNumberException e){
-            System.out.println("Row Exception: "+e.getMessage());
+            LOGGER.log(Level.SEVERE, "Row Exception: "+e.getMessage());
         }
 
         //Check box
         try{
-            IterateBox iterateBox = new IterateBox(select_col, select_row);
+            IterateBox iterateBox = new IterateBox(selectCol, selectRow);
             while(iterateBox.hasNext()){
                 if((int)iterateBox.next() == nr){
                     legal = false;
@@ -155,7 +166,7 @@ public class Sudoku extends Application {
                 }
             }
         }catch (BadNumberException e){
-            System.out.println("Box Exception: "+e.getMessage());
+            LOGGER.log(Level.SEVERE, "Box Exception: "+e.getMessage());
         }
 
         return legal;
@@ -169,16 +180,8 @@ public class Sudoku extends Application {
     protected boolean isFinished(){
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if(getNumber(i,j) == 0) {
-
+                if(getNumber(i,j) == 0 || (getNumber(i,j) != 0 && getOriginalNumber(i,j) == 0 && !isLegal(i,j, getNumber(i,j)))) {
                     return false; //sudoku is not complete if any tile is 0
-
-                }else if(getNumber(i,j) != 0 && getOriginalNumber(i,j) == 0){
-
-                    if(!isLegal(i,j, getNumber(i,j))){
-                        return false; //if any tile is not legal, then it is not completed.
-                    }
-
                 }
             }
         }
@@ -258,6 +261,8 @@ public class Sudoku extends Application {
 
         boolean[] numbers = new boolean[9]; //array keeps track of which numbers have been randomly assigned
 
+        Random rnd = new Random();
+
         Arrays.fill(numbers, Boolean.TRUE);
 
         for (int k = 0; k < 9; k++) {       //for every number (1-9)
@@ -266,7 +271,7 @@ public class Sudoku extends Application {
 
             boolean lookingForNumber = true;
             while(lookingForNumber){               //get a random number that hasn't been taken before
-                int temp = (int)Math.floor(Math.random()*9);    //get random number
+                int temp = rnd.nextInt(9);              //get random number
                 if(numbers[temp]){                              //make sure it hasn't been taken before
                     numbers[temp] = false;                      //take it
                     newNumber = temp+1;                         //set the new number
@@ -302,15 +307,14 @@ public class Sudoku extends Application {
 
         @Override
         public boolean hasNext() {
-            if(this.pos < 9){
-                return true;
-            }else{
-                return false;
-            }
+            return this.pos < 9;
         }
 
         @Override
         public Object next() {
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
             return board[pos++][row];
         }
     }
@@ -330,15 +334,14 @@ public class Sudoku extends Application {
 
         @Override
         public boolean hasNext() {
-            if(this.pos < 9){
-                return true;
-            }else{
-                return false;
-            }
+            return this.pos < 9;
         }
 
         @Override
         public Object next() {
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
             return board[col][pos++];
         }
     }
@@ -348,8 +351,10 @@ public class Sudoku extends Application {
      * Desc: Custom iterator for box
      */
     public class IterateBox implements Iterator{
-        int row,col;
-        int posx, posy;
+        int row;
+        int col;
+        int posx;
+        int posy;
         int pos;
 
         public IterateBox(int col, int row){
@@ -362,15 +367,15 @@ public class Sudoku extends Application {
 
         @Override
         public boolean hasNext() {
-            if(pos < 9){
-                return true;
-            }else{
-                return false;
-            }
+            return this.pos < 9;
         }
 
         @Override
         public Object next() {
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+
             switch(pos){
                 case 0: posx = 0; posy = 0; break;
                 case 1: posx = 1; posy = 0; break;
@@ -381,6 +386,7 @@ public class Sudoku extends Application {
                 case 6: posx = 0; posy = 2; break;
                 case 7: posx = 1; posy = 2; break;
                 case 8: posx = 2; posy = 2; break;
+                default: pos = 8; break;
             }
             pos++;
             return board[col+posy][row+posx];

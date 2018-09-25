@@ -19,7 +19,8 @@ public class SudokuController {
     private Sudoku sudoku = new Sudoku();
 
     private boolean legalNumber = true;
-    private int select_row, select_col;
+    private int selectRow;
+    private int selectCol;
 
     @FXML
     private GridPane grid;
@@ -50,8 +51,8 @@ public class SudokuController {
         int x = (int)Math.floor(event.getSceneX())/50;
         int y = (int)Math.floor(event.getSceneY())/50;
         if(x < 10 && y < 10){
-            select_col = x;
-            select_row = y;
+            selectCol = x;
+            selectRow = y;
         }
 
         drawBoard();
@@ -59,74 +60,41 @@ public class SudokuController {
 
     @FXML
     void newInput(KeyEvent event) {
-        //System.out.println(event.getText());
         int nr = 0;
         String nrString = "" + event.getCode();
         switch (nrString) {
-            case "DIGIT1":
-                nr = 1;
-                break;
-            case "DIGIT2":
-                nr = 2;
-                break;
-            case "DIGIT3":
-                nr = 3;
-                break;
-            case "DIGIT4":
-                nr = 4;
-                break;
-            case "DIGIT5":
-                nr = 5;
-                break;
-            case "DIGIT6":
-                nr = 6;
-                break;
-            case "DIGIT7":
-                nr = 7;
-                break;
-            case "DIGIT8":
-                nr = 8;
-                break;
-            case "DIGIT9":
-                nr = 9;
-                break;
-            case "DIGIT0":
-                nr = -1;
-                break;
-            case "UP":
-                if (select_row > 0) {
-                    select_row--;
-                }
-                break;
-            case "DOWN":
-                if (select_row < 8) {
-                    select_row++;
-                }
-                break;
-            case "LEFT":
-                if (select_col > 0) {
-                    select_col--;
-                }
-                break;
-            case "RIGHT":
-                if (select_col < 8) {
-                    select_col++;
-                }
-                break;
-            default:
-                nr = 0;
-                break;
+            case "DIGIT1": nr = 1;break;
+            case "DIGIT2": nr = 2;break;
+            case "DIGIT3": nr = 3;break;
+            case "DIGIT4": nr = 4;break;
+            case "DIGIT5": nr = 5;break;
+            case "DIGIT6": nr = 6;break;
+            case "DIGIT7": nr = 7;break;
+            case "DIGIT8": nr = 8;break;
+            case "DIGIT9": nr = 9;break;
+            case "DIGIT0": nr = -1;break;
+            case "UP": if (selectRow > 0) { selectRow--; }break;
+            case "DOWN": if (selectRow < 8) { selectRow++; }break;
+            case "LEFT": if (selectCol > 0) { selectCol--; }break;
+            case "RIGHT": if (selectCol < 8) { selectCol++; }break;
+            default: nr = 0;break;
         }
 
-        if (sudoku.isLegal(select_col, select_row, nr)) {
-            if (sudoku.getOriginalNumber(select_col, select_row) == 0) {
-                sudoku.setNumber(select_col, select_row, nr);
+        prosessInput(nr);
+
+        drawBoard(); //update board
+    }
+
+    public void prosessInput(int nr){
+        if (sudoku.isLegal(selectCol, selectRow, nr)) {
+            if (sudoku.getOriginalNumber(selectCol, selectRow) == 0) {
+                sudoku.setNumber(selectCol, selectRow, nr);
             }
         } else if (nr == -1) {
-            if (sudoku.getOriginalNumber(select_col, select_row) == 0) {
-                sudoku.setNumber(select_col, select_row, 0);
+            if (sudoku.getOriginalNumber(selectCol, selectRow) == 0) {
+                sudoku.setNumber(selectCol, selectRow, 0);
             }
-        }else if(sudoku.getNumber(select_col, select_row) != nr){
+        }else if(sudoku.getNumber(selectCol, selectRow) != nr){
             legalNumber = false;
         }
 
@@ -139,15 +107,12 @@ public class SudokuController {
             text1.setOpacity(0); //hide text
         }
 
-        drawBoard(); //update board
     }
 
     @FXML
     public void drawBoard(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-
-        //System.out.println("Rad: "+select_row + "\tCol: "+select_col);
 
         //Mark selected square
         if(legalNumber) {
@@ -156,14 +121,14 @@ public class SudokuController {
             gc.setFill(Color.RED);
             legalNumber = true;
         }
-        gc.fillRect(select_col*50+1,select_row*50+1, 48,48);
+        gc.fillRect(selectCol*(double)50+1,selectRow*(double)50+1, 48,48);
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if(sudoku.getNumber(i, j) != 0){
                     if(sudoku.getOriginalNumber(i,j) != 0) { //original numbers gets a grey background
                         gc.setFill(Color.LIGHTGRAY);
-                        gc.fillRect(i * 50 + 1, j * 50 + 1, 48, 48);
+                        gc.fillRect(i * (double)50 + 1, j * (double)50 + 1, 48, 48);
                     }
                     gc.setFill(Color.BLACK);
                     gc.setFont(new Font(20d));
