@@ -21,7 +21,7 @@
                 </includes>
             </resource>
             <resource>
-                <directory>src\no\ntnu\imt3281\sudoku\sudokus</directory>
+                <directory>/</directory>
                 <includes>
                     <include>sudoku1.json</include>
                 </includes>
