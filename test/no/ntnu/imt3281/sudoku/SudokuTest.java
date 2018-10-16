@@ -229,6 +229,7 @@ public class SudokuTest {
 
         try {
             sudoku.checkCol(0, 1);
+            fail("Expected BadNumberException to be thrown");
         }catch(BadNumberException e){
             assertEquals(e.getMessage(), "Number exists in Col 0 and Row 0");
         }
@@ -241,6 +242,7 @@ public class SudokuTest {
 
         try {
             sudoku.checkRow(0, 1);
+            fail("Expected BadNumberException to be thrown");
         }catch(BadNumberException e){
             assertEquals(e.getMessage(), "Number exists in Col 0 and Row 0");
         }
@@ -253,6 +255,7 @@ public class SudokuTest {
 
         try {
             sudoku.checkBox(0, 0, 1);
+            fail("Expected BadNumberException to be thrown");
         }catch(BadNumberException e){
             assertEquals(e.getMessage(), "Number exists in Col 0 and Row 0");
         }

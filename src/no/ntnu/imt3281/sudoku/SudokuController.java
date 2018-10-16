@@ -14,6 +14,10 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+/**
+ * Class SudokuController
+ * Desc: Link between UI and Sudoku
+ */
 public class SudokuController {
 
     private Sudoku sudoku = new Sudoku();

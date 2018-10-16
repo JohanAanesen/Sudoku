@@ -13,6 +13,10 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Class:        Sudoku
+ * Description:  Sudoku class holds all functions and data related to playing the game
+ */
 public class Sudoku extends Application {
 
     private static final Logger LOGGER = Logger.getLogger( Sudoku.class.getName() );
@@ -32,6 +36,10 @@ public class Sudoku extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Title: Main
+     * @param args arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -65,6 +73,7 @@ public class Sudoku extends Application {
                 len = fis.read(bytes);
         }catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IOException(e);
         } finally {
             if(fis != null) {
                 fis.close();
@@ -88,8 +97,10 @@ public class Sudoku extends Application {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                originalBoard[i][j] = 0; //resets board
-                originalBoard[i][j] = newBoard[i][j]; //copies the new board
+                //resets board
+                originalBoard[i][j] = 0;
+                //copies the new board
+                originalBoard[i][j] = newBoard[i][j];
             }
         }
 
@@ -103,8 +114,10 @@ public class Sudoku extends Application {
     protected void resetOriginalBoard(){
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                originalBoard[i][j] = 0; //resets board
-                originalBoard[i][j] = board[i][j]; //copies the new board
+                //resets board
+                originalBoard[i][j] = 0;
+                //copies the new board
+                originalBoard[i][j] = board[i][j];
             }
         }
     }
@@ -122,13 +135,20 @@ public class Sudoku extends Application {
     protected boolean isLegal(int selectCol, int selectRow, int nr){
         boolean legal = true;
 
-        if(originalBoard[selectCol][selectRow] != 0){ //you can't edit a original number
+        //you can't edit a original number
+        if(originalBoard[selectCol][selectRow] != 0){
             return false;
         }
 
-        if(board[selectCol][selectRow] == nr){return true;} //if number is already there then it must be legal
+        //if number is already there then it must be legal
+        if(board[selectCol][selectRow] == nr){
+            return true;
+        }
 
-        if(nr < 1){return false;} //number must be > 0
+        //number must be > 0
+        if(nr < 1){
+            return false;
+        }
 
         //Check col
         try{
@@ -144,7 +164,6 @@ public class Sudoku extends Application {
         }catch (BadNumberException e){
             legal = false;
             LOGGER.log(Level.SEVERE, "Row Exception: "+e.getMessage());
-
         }
 
         //Check box
@@ -216,12 +235,13 @@ public class Sudoku extends Application {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if(getNumber(i,j) == 0 || (getNumber(i,j) != 0 && getOriginalNumber(i,j) == 0 && !isLegal(i,j, getNumber(i,j)))) {
-                    return false; //sudoku is not complete if any tile is 0
+                    //sudoku is not complete if any tile is 0
+                    return false;
                 }
             }
         }
-
-        return true; //all tiles are legal and filled, sudoku is complete :)
+        //all tiles are legal and filled, sudoku is complete :)
+        return true;
     }
 
     /**
@@ -300,12 +320,12 @@ public class Sudoku extends Application {
 
         Arrays.fill(numbers, Boolean.TRUE);
 
-        for (int k = 0; k < 9; k++) {       //for every number (1-9)
+        for (int k = 0; k < 9; k++) {                           //for every number (1-9)
 
             int newNumber = 0;
 
             boolean lookingForNumber = true;
-            while(lookingForNumber){               //get a random number that hasn't been taken before
+            while(lookingForNumber){                            //get a random number that hasn't been taken before
                 int temp = rnd.nextInt(9);              //get random number
                 if(numbers[temp]){                              //make sure it hasn't been taken before
                     numbers[temp] = false;                      //take it
@@ -335,6 +355,10 @@ public class Sudoku extends Application {
         int row;
         int pos;
 
+        /**
+         * Constructor
+         * @param row row to be iterated
+         */
         public IterateRow(int row){
             this.row = row;
             this.pos = 0;
@@ -362,6 +386,10 @@ public class Sudoku extends Application {
         int col;
         int pos;
 
+        /**
+         * Constructor
+         * @param col column to be iterated
+         */
         public IterateCol(int col){
             this.col = col;
             this.pos = 0;
@@ -392,6 +420,11 @@ public class Sudoku extends Application {
         int posy;
         int pos;
 
+        /**
+         * constructor
+         * @param col column to be iterated
+         * @param row row to be iterated
+         */
         public IterateBox(int col, int row){
             this.col = col/3*3;
             this.row = row/3*3;
