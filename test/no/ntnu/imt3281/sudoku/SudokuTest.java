@@ -1,6 +1,9 @@
 package no.ntnu.imt3281.sudoku;
 
+import org.hamcrest.CustomMatcher;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 
@@ -218,4 +221,42 @@ public class SudokuTest {
 
         assertTrue(sudoku.isFinished());
     }
+
+    @Test
+    public void testColException() {
+        Sudoku sudoku = new Sudoku();
+        sudoku.setNumber(0,0, 1);
+
+        try {
+            sudoku.checkCol(0, 1);
+        }catch(BadNumberException e){
+            assertEquals(e.getMessage(), "Number exists in Col 0 and Row 0");
+        }
+    }
+
+    @Test
+    public void testRowException() {
+        Sudoku sudoku = new Sudoku();
+        sudoku.setNumber(0,0, 1);
+
+        try {
+            sudoku.checkRow(0, 1);
+        }catch(BadNumberException e){
+            assertEquals(e.getMessage(), "Number exists in Col 0 and Row 0");
+        }
+    }
+
+    @Test
+    public void testBoxException() {
+        Sudoku sudoku = new Sudoku();
+        sudoku.setNumber(0,0, 1);
+
+        try {
+            sudoku.checkBox(0, 0, 1);
+        }catch(BadNumberException e){
+            assertEquals(e.getMessage(), "Number exists in Col 0 and Row 0");
+        }
+    }
+
+
 }

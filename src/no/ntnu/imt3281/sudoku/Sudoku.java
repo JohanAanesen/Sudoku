@@ -114,8 +114,8 @@ public class Sudoku extends Application {
      * Desc:    Asserts that a number is a legal number in a given sudoku tile,
      *          will check that same number is not occuring on the same row, column
      *          or 'box'
-     * @param   selectCol  selected column
-     * @param   selectRow  selected row
+     * @param   selectCol   selected column
+     * @param   selectRow   selected row
      * @param   nr          number from input
      * @return  boolean     true|false
      */
@@ -130,46 +130,81 @@ public class Sudoku extends Application {
 
         if(nr < 1){return false;} //number must be > 0
 
-        //Check Column
+        //Check col
         try{
-            IterateCol iterateCol = new IterateCol(selectCol);
-            while(iterateCol.hasNext()){
-                if((int)iterateCol.next() == nr){
-                    legal = false;
-                    throw new BadNumberException(selectCol, iterateCol.pos-1);
-                }
-            }
+            checkCol(selectCol, nr);
         }catch (BadNumberException e){
+            legal = false;
             LOGGER.log(Level.SEVERE, "Col Exception: "+e.getMessage());
         }
 
         //Check row
         try{
-            IterateRow iterateRow = new IterateRow(selectRow);
-            while(iterateRow.hasNext()){
-                if((int)iterateRow.next() == nr){
-                    legal = false;
-                    throw new BadNumberException(iterateRow.pos-1, selectRow);
-                }
-            }
+            checkRow(selectRow, nr);
         }catch (BadNumberException e){
+            legal = false;
             LOGGER.log(Level.SEVERE, "Row Exception: "+e.getMessage());
+
         }
 
         //Check box
         try{
-            IterateBox iterateBox = new IterateBox(selectCol, selectRow);
-            while(iterateBox.hasNext()){
-                if((int)iterateBox.next() == nr){
-                    legal = false;
-                    throw new BadNumberException(iterateBox.col+iterateBox.posy, iterateBox.row+iterateBox.posx);
-                }
-            }
+            checkBox(selectCol, selectRow, nr);
         }catch (BadNumberException e){
+            legal = false;
             LOGGER.log(Level.SEVERE, "Box Exception: "+e.getMessage());
         }
 
         return legal;
+    }
+
+    /**
+     * Title:                       checkCol
+     * Desc:                        checks selected column and throws BadNumberException if nr already exists
+     * @param selectCol             selected column
+     * @param nr                    number
+     * @throws BadNumberException   exception
+     */
+    protected void checkCol(int selectCol, int nr) throws BadNumberException{
+        IterateCol iterateCol = new IterateCol(selectCol);
+        while(iterateCol.hasNext()){
+            if((int)iterateCol.next() == nr){
+                throw new BadNumberException(selectCol, iterateCol.pos-1);
+            }
+        }
+    }
+
+    /**
+     * Title:                       checkRow
+     * Desc:                        checks selected row and throws BadNumberException if nr already exists
+     * @param selectRow             selected row
+     * @param nr                    number
+     * @throws BadNumberException   exception
+     */
+    protected void checkRow(int selectRow, int nr) throws BadNumberException{
+        IterateRow iterateRow = new IterateRow(selectRow);
+        while(iterateRow.hasNext()){
+            if((int)iterateRow.next() == nr){
+                throw new BadNumberException(iterateRow.pos-1, selectRow);
+            }
+        }
+    }
+
+    /**
+     * Title:                       checkBox
+     * Desc:                        checks selected box and throws BadNumberException if nr already exists
+     * @param selectCol             selected col
+     * @param selectRow             selected row
+     * @param nr                    number
+     * @throws BadNumberException   exception
+     */
+    protected void checkBox(int selectCol, int selectRow, int nr) throws BadNumberException{
+        IterateBox iterateBox = new IterateBox(selectCol, selectRow);
+        while(iterateBox.hasNext()){
+            if((int)iterateBox.next() == nr){
+                throw new BadNumberException(iterateBox.col+iterateBox.posy, iterateBox.row+iterateBox.posx);
+            }
+        }
     }
 
     /**
