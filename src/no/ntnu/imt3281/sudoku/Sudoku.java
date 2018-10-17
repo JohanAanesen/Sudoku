@@ -54,7 +54,9 @@ public class Sudoku extends Application {
     }
 
     protected void setNumber(int y, int x, int value){
-        board[y][x] = value;
+        if(getOriginalNumber(y,x) == 0) {
+            board[y][x] = value;
+        }
     }
 
     protected void setOriginalNumber(int y, int x, int value){
