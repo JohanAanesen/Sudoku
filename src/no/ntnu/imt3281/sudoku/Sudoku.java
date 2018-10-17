@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,6 +57,10 @@ public class Sudoku extends Application {
         board[y][x] = value;
     }
 
+    protected void setOriginalNumber(int y, int x, int value){
+        originalBoard[y][x] = value;
+    }
+
 
     /**
      * Title:   ReadSudokuFromFile
@@ -84,7 +89,7 @@ public class Sudoku extends Application {
             return;
         }
 
-        String[] valueStr = new String(bytes).trim().split("[^0-9]+");
+        String[] valueStr = new String(bytes, Charset.defaultCharset()).trim().split("[^0-9]+");
 
         int[][] newBoard = new int[9][9];
 

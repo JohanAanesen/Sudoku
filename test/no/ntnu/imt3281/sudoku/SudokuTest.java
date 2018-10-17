@@ -1,9 +1,6 @@
 package no.ntnu.imt3281.sudoku;
 
-import org.hamcrest.CustomMatcher;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 
@@ -37,6 +34,15 @@ public class SudokuTest {
         sudoku.setNumber(5,5, number);
 
         assertEquals(5, sudoku.getNumber(5,5));
+    }
+
+    @Test
+    public void setOriginalNumber() {
+        Sudoku sudoku = new Sudoku();
+        int number = 5;
+        sudoku.setOriginalNumber(5,5, number);
+
+        assertEquals(number, sudoku.getOriginalNumber(5,5));
     }
 
     @Test
@@ -261,5 +267,20 @@ public class SudokuTest {
         }
     }
 
+    @Test
+    public void testNegativeNumber(){
+        Sudoku sudoku = new Sudoku();
+
+        assertFalse(sudoku.isLegal(0,0, -1));
+    }
+
+    @Test
+    public void testEditOriginalNumber(){
+        Sudoku sudoku = new Sudoku();
+
+        sudoku.setOriginalNumber(0,0, 1);
+
+        assertFalse(sudoku.isLegal(0,0,5));
+    }
 
 }
