@@ -7,6 +7,7 @@ package no.ntnu.imt3281.sudoku;
 public class BadNumberException extends Exception {
     final int x;
     final int y;
+    final String msg;
 
     /**
      * Title:       BadNumberException
@@ -14,14 +15,15 @@ public class BadNumberException extends Exception {
      * @param x     x nr
      * @param y     y nr
      */
-    public BadNumberException (int x, int y) {
+    public BadNumberException (String msg, int x, int y) {
+        this.msg = msg;
         this.x = x;
         this.y = y;
     }
 
     @Override
     public String getMessage(){
-        return "Number exists in Col "+x+" and Row "+y;
+        return msg+" Number exists in Col "+x+" and Row "+y;
     }
 
 }

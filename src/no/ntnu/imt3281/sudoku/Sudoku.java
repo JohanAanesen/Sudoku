@@ -160,7 +160,7 @@ public class Sudoku extends Application {
             checkCol(selectCol, nr);
         }catch (BadNumberException e){
             legal = false;
-            LOGGER.log(Level.SEVERE, "Col Exception: "+e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
 
         //Check row
@@ -168,7 +168,7 @@ public class Sudoku extends Application {
             checkRow(selectRow, nr);
         }catch (BadNumberException e){
             legal = false;
-            LOGGER.log(Level.SEVERE, "Row Exception: "+e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
 
         //Check box
@@ -176,7 +176,7 @@ public class Sudoku extends Application {
             checkBox(selectCol, selectRow, nr);
         }catch (BadNumberException e){
             legal = false;
-            LOGGER.log(Level.SEVERE, "Box Exception: "+e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
 
         return legal;
@@ -193,7 +193,7 @@ public class Sudoku extends Application {
         IterateCol iterateCol = new IterateCol(selectCol);
         while(iterateCol.hasNext()){
             if((int)iterateCol.next() == nr){
-                throw new BadNumberException(selectCol, iterateCol.pos-1);
+                throw new BadNumberException("Col Exception:", selectCol, iterateCol.pos-1);
             }
         }
     }
@@ -209,7 +209,7 @@ public class Sudoku extends Application {
         IterateRow iterateRow = new IterateRow(selectRow);
         while(iterateRow.hasNext()){
             if((int)iterateRow.next() == nr){
-                throw new BadNumberException(iterateRow.pos-1, selectRow);
+                throw new BadNumberException("Row Exception:", iterateRow.pos-1, selectRow);
             }
         }
     }
@@ -226,7 +226,7 @@ public class Sudoku extends Application {
         IterateBox iterateBox = new IterateBox(selectCol, selectRow);
         while(iterateBox.hasNext()){
             if((int)iterateBox.next() == nr){
-                throw new BadNumberException(iterateBox.col+iterateBox.posy, iterateBox.row+iterateBox.posx);
+                throw new BadNumberException("Box Exception:", iterateBox.col+iterateBox.posy, iterateBox.row+iterateBox.posx);
             }
         }
     }
